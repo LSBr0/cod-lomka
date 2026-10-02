@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CoD-ломка · Отсчёт для Евгения</title>
+<meta name="description" content="Секретная операция «Дожить до релиза». Пациент: Евгений. Диагноз: острая CoD-ломка. До 23 октября держаться.">
+<meta property="og:title" content="CoD-ломка · Отсчёт для Евгения">
+<meta property="og:description" content="Пациент: Евгений. Диагноз: острая CoD-ломка. До выхода новой Call of Duty держаться.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#07090a">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Russo+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07090a; --panel:rgba(16,20,18,.72); --line:rgba(255,140,40,.16);
+  --acc:#ff7a1a; --acc2:#ffb347; --ok:#8cff5a; --bad:#ff3b3b;
+  --txt:#ece6d8; --mute:#8b8a7f;
+  --head:"Russo One",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  min-height:100dvh;color:var(--txt);font:15px/1.5 var(--mono);overflow-x:hidden;
+  background:
+    radial-gradient(1200px 600px at 50% -10%,rgba(255,122,26,.18),transparent 60%),
+    radial-gradient(800px 500px at 100% 100%,rgba(140,255,90,.06),transparent 60%),
+    repeating-linear-gradient(0deg,transparent 0 47px,rgba(255,255,255,.025) 47px 48px),
+    repeating-linear-gradient(90deg,transparent 0 47px,rgba(255,255,255,.025) 47px 48px),
+    var(--bg);
+}
+/* scanlines + vignette + grain */
+body::before,body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50}
+body::before{
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px),
+    radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.65));
+}
+body::after{
+  inset:-50%;opacity:.07;
+  background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation:grain .6s steps(4) infinite;
+}
+@keyframes grain{25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 16px}
+
+/* top bar */
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);border-bottom:1px solid var(--line)}
+.rec{color:var(--bad);display:flex;align-items:center;gap:8px;font-weight:700}
+.rec i{width:9px;height:9px;border-radius:50%;background:var(--bad);box-shadow:0 0 12px var(--bad);animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.15}}
+.op{flex:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#clock{font-variant-numeric:tabular-nums;color:var(--ok)}
+
+/* hero */
+.hero{text-align:center;padding:clamp(36px,8vw,84px) 0 28px}
+.kicker{display:inline-block;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--acc);
+  border:1px solid rgba(255,122,26,.45);padding:6px 14px;background:rgba(255,122,26,.07);
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+h1{font:clamp(26px,5.4vw,58px)/1.05 var(--head);text-transform:uppercase;margin:22px 0 6px;letter-spacing:.02em}
+h1 span{display:block;font-size:1.35em;background:linear-gradient(180deg,#fff 10%,var(--acc2) 55%,var(--acc) 90%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 24px rgba(255,122,26,.35));
+  animation:glitch 6s infinite}
+@keyframes glitch{
+  0%,92%,100%{transform:none;filter:drop-shadow(0 0 24px rgba(255,122,26,.35))}
+  93%{transform:translate(-3px,1px) skewX(-6deg);filter:drop-shadow(3px 0 0 rgba(255,0,60,.7)) drop-shadow(-3px 0 0 rgba(0,255,220,.6))}
+  95%{transform:translate(3px,-1px)}
+  97%{transform:translate(-1px,0) skewX(3deg)}
+}
+
+/* countdown */
+.cd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,2vw,20px);margin:34px auto 0;max-width:900px}
+.unit{position:relative;padding:clamp(14px,3vw,26px) 4px clamp(10px,2vw,16px)}
+.num{display:block;font:700 clamp(44px,10.5vw,124px)/1 var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.04em;
+  text-shadow:0 0 28px rgba(255,122,26,.45)}
+.num.tick{animation:tick .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes tick{0%{transform:translateY(-18%) scale(1.06);opacity:.2;color:var(--acc2)}100%{transform:none;opacity:1}}
+.lbl{display:block;margin-top:8px;font-size:clamp(10px,1.5vw,13px);letter-spacing:.28em;text-transform:uppercase;color:var(--mute)}
+.sub{margin-top:18px;font-size:13px;color:var(--mute);letter-spacing:.08em}
+.sub b{color:var(--acc);font-variant-numeric:tabular-nums;display:inline-block;min-width:3ch;text-align:left}
+
+/* HUD corner brackets */
+.hud{
+  --c:var(--acc);
+  background:
+    linear-gradient(var(--c),var(--c)) 0 0/16px 2px, linear-gradient(var(--c),var(--c)) 0 0/2px 16px,
+    linear-gradient(var(--c),var(--c)) 100% 0/16px 2px, linear-gradient(var(--c),var(--c)) 100% 0/2px 16px,
+    linear-gradient(var(--c),var(--c)) 0 100%/16px 2px, linear-gradient(var(--c),var(--c)) 0 100%/2px 16px,
+    linear-gradient(var(--c),var(--c)) 100% 100%/16px 2px, linear-gradient(var(--c),var(--c)) 100% 100%/2px 16px,
+    var(--panel);
+  background-repeat:no-repeat;
+  border:1px solid var(--line);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:28px 0 36px}
+.card{padding:22px;min-width:0}
+.card h2{font:14px var(--head);letter-spacing:.18em;text-transform:uppercase;color:var(--acc);margin-bottom:14px;
+  display:flex;justify-content:space-between;gap:10px}
+.card h2 small{font:11px var(--mono);color:var(--mute);letter-spacing:.12em}
+.row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed rgba(255,255,255,.07);font-size:14px}
+.row span:first-child{color:var(--mute)}
+.row b{text-align:right}
+.stamp{display:inline-block;margin-top:14px;font:13px var(--head);color:var(--bad);border:2px solid var(--bad);padding:4px 10px;
+  transform:rotate(-4deg);letter-spacing:.12em;opacity:.85}
+
+/* ECG */
+.ecg{margin-top:14px;height:56px;overflow:hidden;position:relative;border:1px solid rgba(140,255,90,.18);
+  background:repeating-linear-gradient(90deg,transparent 0 19px,rgba(140,255,90,.06) 19px 20px),
+             repeating-linear-gradient(0deg,transparent 0 13px,rgba(140,255,90,.06) 13px 14px)}
+.ecg svg{position:absolute;left:0;top:0;height:100%;width:200%;animation:ecg var(--beat,1s) linear infinite}
+.ecg path{fill:none;stroke:var(--ok);stroke-width:1.6;filter:drop-shadow(0 0 4px var(--ok));vector-effect:non-scaling-stroke}
+@keyframes ecg{to{transform:translateX(-50%)}}
+.bpm{color:var(--ok);font-variant-numeric:tabular-nums}
+
+/* meter */
+.big{font:clamp(44px,7vw,64px)/1 var(--head);font-variant-numeric:tabular-nums}
+.big small{font-size:.4em;color:var(--mute)}
+.level{margin:6px 0 16px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.bars{display:grid;grid-template-columns:repeat(20,1fr);gap:4px;height:26px}
+.bars i{background:rgba(255,255,255,.06);transform-origin:bottom;transition:background .4s}
+.bars i.on{background:linear-gradient(180deg,var(--acc2),var(--acc));box-shadow:0 0 10px rgba(255,122,26,.5)}
+.bars i.on.hot{background:linear-gradient(180deg,#ff8080,var(--bad));box-shadow:0 0 12px rgba(255,59,59,.6);animation:throb .8s ease-in-out infinite alternate}
+@keyframes throb{to{opacity:.55}}
+.scale{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--mute);letter-spacing:.1em}
+
+/* symptoms */
+.sym{list-style:none;display:grid;gap:10px}
+.sym li{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid rgba(255,255,255,.07);background:rgba(0,0,0,.25);
+  animation:in .6s both cubic-bezier(.2,.8,.2,1)}
+.sym li:nth-child(2){animation-delay:.12s}.sym li:nth-child(3){animation-delay:.24s}
+.sym li::before{content:"⚠";color:var(--acc);flex:none}
+@keyframes in{from{opacity:0;transform:translateX(-12px)}}
+
+/* dose */
+.dose{display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+.btn{appearance:none;border:0;cursor:pointer;font:16px var(--head);letter-spacing:.14em;text-transform:uppercase;color:#120800;
+  padding:18px 22px;background:linear-gradient(180deg,var(--acc2),var(--acc));width:100%;
+  clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);
+  box-shadow:0 0 30px rgba(255,122,26,.35);transition:transform .15s,filter .15s}
+.btn:hover{filter:brightness(1.12)}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.btn.ghost{background:transparent;color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc);font-size:13px;padding:13px}
+.quote{min-height:3em;color:var(--txt);font-size:14px}
+.quote::before{content:"› ";color:var(--acc)}
+.count{font-size:12px;color:var(--mute);letter-spacing:.1em}
+.count b{color:var(--acc)}
+
+/* ticker */
+.ticker{position:relative;z-index:1;overflow:hidden;border-block:1px solid var(--line);background:rgba(255,122,26,.06);
+  font-size:13px;letter-spacing:.06em;white-space:nowrap}
+.ticker .tag{position:absolute;left:0;top:0;bottom:0;z-index:2;display:flex;align-items:center;padding:0 14px;
+  background:var(--acc);color:#120800;font:12px var(--head);letter-spacing:.16em}
+.track{display:inline-block;padding:11px 0;animation:marquee 70s linear infinite}
+.track span{margin-right:56px}
+.track span::before{content:"◆ ";color:var(--acc)}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+footer{position:relative;z-index:1;text-align:center;color:var(--mute);font-size:12px;padding:22px 16px 34px;letter-spacing:.06em}
+
+/* toast */
+#toast{position:fixed;left:50%;bottom:24px;z-index:60;transform:translate(-50%,140%);transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  background:#111;border:1px solid var(--acc);padding:12px 18px;font-size:14px;max-width:calc(100% - 32px);box-shadow:0 10px 40px rgba(0,0,0,.6)}
+#toast.show{transform:translate(-50%,0)}
+
+/* shake */
+.shake .wrap{animation:shake .5s}
+@keyframes shake{10%,90%{transform:translate(-2px,1px)}20%,80%{transform:translate(4px,-2px)}30%,50%,70%{transform:translate(-6px,2px) rotate(-.4deg)}40%,60%{transform:translate(6px,-1px) rotate(.4deg)}}
+
+/* final */
+#final{position:fixed;inset:0;z-index:40;display:grid;place-items:center;text-align:center;padding:24px;
+  background:radial-gradient(circle at center,rgba(255,122,26,.35),rgba(7,9,10,.94) 60%)}
+#final[hidden]{display:none}
+#final h2{font:clamp(40px,10vw,120px)/.95 var(--head);text-transform:uppercase;animation:slam .8s cubic-bezier(.2,1.4,.3,1) both}
+#final p{font:clamp(18px,3.5vw,32px) var(--head);color:var(--acc2);margin:18px 0 28px;animation:in .6s .5s both}
+#final .btn{max-width:360px}
+@keyframes slam{from{transform:scale(3);opacity:0;filter:blur(10px)}}
+.flash{position:fixed;inset:0;background:#fff;z-index:45;pointer-events:none;animation:flash .9s forwards}
+@keyframes flash{to{opacity:0}}
+
+@media (max-width:760px){
+  .grid{grid-template-columns:1fr}
+  .op{display:none}
+  .card{padding:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  #fx{display:none}
+}
+</style>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <header class="bar">
+    <span class="rec"><i></i>Live</span>
+    <span class="op">Операция «Дожить до релиза» · Сектор 23-10</span>
+    <span id="clock">МСК --:--:--</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="kicker">Совершенно секретно · Только для Евгения</p>
+      <h1>До выхода новой <span>Call of Duty</span></h1>
+      <div class="cd" role="timer" aria-label="Обратный отсчёт до релиза">
+        <div class="unit hud"><b class="num" id="d">--</b><span class="lbl" id="dl">дней</span></div>
+        <div class="unit hud"><b class="num" id="h">--</b><span class="lbl" id="hl">часов</span></div>
+        <div class="unit hud"><b class="num" id="m">--</b><span class="lbl" id="ml">минут</span></div>
+        <div class="unit hud"><b class="num" id="s">--</b><span class="lbl" id="sl">секунд</span></div>
+      </div>
+      <p class="sub">+<b id="ms">000</b> мс · Высадка 23.10.2026 · 00:00 МСК</p>
+    </section>
+
+    <div class="grid">
+      <section class="card hud">
+        <h2>Медкарта <small>№ F-23.10</small></h2>
+        <div class="row"><span>Пациент</span><b>Евгений</b></div>
+        <div class="row"><span>Диагноз</span><b>Острая CoD-ломка</b></div>
+        <div class="row"><span>Пульс</span><b class="bpm"><span id="bpm">--</span> уд/мин</b></div>
+        <div class="row"><span>Прогноз</span><b id="prognosis">—</b></div>
+        <div class="ecg"><svg viewBox="0 0 400 40" preserveAspectRatio="none" aria-hidden="true"><path id="ecg"/></svg></div>
+        <span class="stamp">Не лечится. Только релизом</span>
+      </section>
+
+      <section class="card hud">
+        <h2>Уровень ломки <small>в реальном времени</small></h2>
+        <div class="big"><span id="pct">--</span><small>%</small></div>
+        <div class="level" id="level">—</div>
+        <div class="bars" id="bars"></div>
+        <div class="scale"><span>Терпимо</span><span>Звонит в Activision</span><span>☠</span></div>
+      </section>
+
+      <section class="card hud">
+        <h2>Симптомы дня <small id="symday"></small></h2>
+        <ul class="sym" id="sym"></ul>
+      </section>
+
+      <section class="card hud dose">
+        <div>
+          <h2>Экстренная помощь <small>самолечение</small></h2>
+          <p class="quote" id="quote">Нажми, если стало совсем невыносимо.</p>
+        </div>
+        <div>
+          <button class="btn" id="doseBtn" type="button">💉 Принять дозу</button>
+          <p class="count" style="margin:10px 0 14px">Принято доз: <b id="doses">0</b> <span id="doseNote"></span></p>
+          <button class="btn ghost" id="share" type="button">📡 Отправить разведданные</button>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div class="ticker" aria-label="Сводка с фронта">
+  <span class="tag">РАЦИЯ</span>
+  <div class="track" id="ticker"></div>
+</div>
+
+<footer>Фанатская шутка. Не связано с Activision. Сделано с любовью и лёгкой тревожностью.</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<div id="final" hidden>
+  <div>
+    <h2>Миссия<br>выполнена</h2>
+    <p>Евгений, ломка окончена. ИДИ ИГРАЙ.</p>
+    <button class="btn" type="button" onclick="burst()">🎉 Ещё салют</button>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const q = new URLSearchParams(location.search);
+const test = +q.get('test'); // ?test=10 — релиз через 10 секунд
+const TARGET = test > 0 ? Date.now() + test * 1e3 : Date.parse('2026-10-23T00:00:00+03:00');
+const START = Date.parse('2026-08-01T00:00:00+03:00'); // ponytail: условное «начало ожидания» для шкалы
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const SYMPTOMS = [
+  'Пересмотрел трейлер 47 раз. Знает каждый кадр наизусть.',
+  'Перезаряжается каждый раз, когда закрывает холодильник.',
+  'Говорит «чисто», выходя из ванной.',
+  'Кидает носки как гранаты, с отсчётом «три… два…»',
+  'Проверяет предзагрузку каждые 15 минут. Её ещё нет.',
+  'Во сне шепчет «UAV в воздухе».',
+  'Поставил на будильник звук хитмаркера.',
+  'Пытается сделать слайд-кэнсел в коридоре.',
+  'Называет маму «союзник», а кота — «вражеский дрон».',
+  'Читает патчноуты, которых ещё не существует.',
+  'Тренирует аим на мухах. Пока 0 из 12.',
+  'Заходит на кухню через «угол» с префайром.',
+  'Взял отгул на 23-е. И на 24-е. И на 25-е.',
+  'Закупил энергетиков на месяц вперёд.',
+  'Отвечает на любые вопросы только «Roger that».',
+  'Чистит геймпад ватной палочкой. Третий раз за день.',
+  'Считает дни не в днях, а в «катках до релиза».',
+  'Пишет в чат «gg», когда заканчивается рабочий день.',
+];
+const RADIO = [
+  'Командование: держаться до 23.10. Подкрепление в пути',
+  'Евгений замечен у монитора. Статус: ждёт',
+  'Разведка: релиз не перенесли. Повторяю: НЕ перенесли',
+  'Внимание: уровень терпения критически низкий',
+  'Дрон-разведчик зафиксировал третий пересмотр трейлера за час',
+  'Медики рекомендуют: трава, солнце, вода. Пациент отказался',
+  'Штаб: сохранять спокойствие. Спокойствие не обнаружено',
+  'Квадрат 23-10: высадка запланирована на 00:00 МСК',
+  'Слот в календаре на 23.10 — ЗАНЯТ навсегда',
+  'Снабжение: чипсы доставлены. Энергетики доставлены',
+  'Перехвачено: «ещё чуть-чуть, ещё чуть-чуть…»',
+  'Сводка: соседи жалуются на звуки выстрелов из прошлой части',
+];
+const DOSES = [
+  'Посмотрел геймплей 10 минут. Отпустило на 4 секунды.',
+  'Зашёл в прошлую часть. Не то. Совсем не то.',
+  'Глубокий вдох. Это просто игра… АГА, КОНЕЧНО.',
+  'Доза принята. Побочка: желание купить второй геймпад.',
+  'Медик: ещё одна доза — и проверяем пульс.',
+  'Принял. Подумал про релиз. Стало хуже.',
+  'Попробовал отвлечься на работу. Не получилось.',
+  'Помогло. Шутка. Не помогло.',
+  'Обнял геймпад. Геймпад обнял в ответ (нет).',
+  'Посмотрел на часы. Прошла одна минута. Держись, боец.',
+];
+const LEVELS = [
+  [25, 'Терпимо. Пока что.', 'var(--ok)'],
+  [45, 'Пересматривает трейлеры', 'var(--acc2)'],
+  [65, 'Трясутся руки', 'var(--acc2)'],
+  [80, 'Звонит в Activision', 'var(--acc)'],
+  [92, 'Спит в обнимку с геймпадом', 'var(--bad)'],
+  [101, '☠ КРИТИЧНО ☠', 'var(--bad)'],
+];
+
+// склонение: plural(5, ['день','дня','дней'])
+const plural = (n, f) => f[(n % 10 === 1 && n % 100 !== 11) ? 0 : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) ? 1 : 2];
+const pad = n => String(n).padStart(2, '0');
+
+// --- статика: тикер, шкала, ЭКГ
+const tickerHtml = RADIO.map(t => `<span>${t}</span>`).join('');
+$('ticker').innerHTML = tickerHtml + tickerHtml; // дубль для бесшовной прокрутки
+$('bars').innerHTML = '<i></i>'.repeat(20);
+const beat = 'l26 0 l5 -4 l5 4 l5 0 l3 8 l4 -24 l4 28 l4 -12 l10 0 l6 -6 l8 6 l20 0';
+$('ecg').setAttribute('d', 'M0 20 ' + Array(4).fill(beat).join(' '));
+
+// --- тики
+const els = { d: $('d'), h: $('h'), m: $('m'), s: $('s') };
+const prev = {};
+function set(k, v) {
+  if (prev[k] === v) return;
+  prev[k] = v;
+  els[k].textContent = v;
+  if (!reduce) { els[k].classList.remove('tick'); void els[k].offsetWidth; els[k].classList.add('tick'); }
+}
+
+let lastSec = -1, symDay = -1, done = false;
+function frame() {
+  const now = Date.now(), left = TARGET - now;
+  if (left <= 0) return finish();
+
+  const sec = Math.floor(left / 1e3);
+  $('ms').textContent = String(left % 1e3).padStart(3, '0');
+
+  if (sec !== lastSec) {
+    lastSec = sec;
+    const d = Math.floor(sec / 86400), h = Math.floor(sec / 3600) % 24, m = Math.floor(sec / 60) % 60, s = sec % 60;
+    set('d', pad(d)); set('h', pad(h)); set('m', pad(m)); set('s', pad(s));
+    $('dl').textContent = plural(d, ['день', 'дня', 'дней']);
+    $('hl').textContent = plural(h, ['час', 'часа', 'часов']);
+    $('ml').textContent = plural(m, ['минута', 'минуты', 'минут']);
+    $('sl').textContent = plural(s, ['секунда', 'секунды', 'секунд']);
+    document.title = `${d}д ${pad(h)}:${pad(m)}:${pad(s)} · CoD-ломка`;
+    $('clock').textContent = 'МСК ' + new Date(now).toLocaleTimeString('ru-RU', { timeZone: 'Europe/Moscow' });
+    vitals(now, d);
+  }
+  requestAnimationFrame(frame);
+}
+
+function vitals(now, daysLeft) {
+  const p = Math.min(1, Math.max(0, (now - START) / (TARGET - START)));
+  const pct = Math.round(p * 1000) / 10;
+  $('pct').textContent = pct.toFixed(1);
+  const [, name, color] = LEVELS.find(l => pct < l[0]);
+  $('level').textContent = name; $('level').style.color = color;
+  const on = Math.ceil(p * 20);
+  [...$('bars').children].forEach((b, i) => { b.className = i < on ? (i >= 16 ? 'on hot' : 'on') : ''; });
+
+  const bpm = Math.round(72 + p * 110 + Math.random() * 6);
+  $('bpm').textContent = bpm;
+  document.documentElement.style.setProperty('--beat', (2 * 60 / bpm).toFixed(2) + 's'); // сдвиг на -50% = 2 удара
+  $('prognosis').textContent = daysLeft > 14 ? 'Тяжёлый, но стабильный' : daysLeft > 5 ? 'Ухудшается' : daysLeft > 1 ? 'Держится на энергетиках' : 'Вот-вот выпишут';
+
+  if (daysLeft !== symDay) { symDay = daysLeft; symptoms(daysLeft); }
+}
+
+function symptoms(day) {
+  // детерминированный выбор 3 симптомов на день: сегодня у всех одинаковые
+  let seed = day * 9301 + 49297;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const pool = SYMPTOMS.slice(), out = [];
+  while (out.length < 3) out.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0]);
+  $('sym').innerHTML = out.map(t => `<li>${t}</li>`).join('');
+  $('symday').textContent = `T−${day} ${plural(day, ['день', 'дня', 'дней'])}`;
+}
+
+function finish() {
+  if (done) return; done = true;
+  ['d', 'h', 'm', 's'].forEach(k => set(k, '00'));
+  $('ms').textContent = '000';
+  document.title = '🎮 ВЫШЛА! Евгений, иди играй';
+  $('final').hidden = false;
+  if (!reduce) {
+    const f = document.createElement('div'); f.className = 'flash';
+    document.body.append(f); setTimeout(() => f.remove(), 1000);
+  }
+  burst();
+}
+
+// --- кнопки
+let toastT;
+function toast(t) {
+  $('toast').textContent = t; $('toast').classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(() => $('toast').classList.remove('show'), 2600);
+}
+
+let doses = 0;
+try { doses = +localStorage.getItem('doses') || 0; } catch {}
+const showDoses = () => {
+  $('doses').textContent = doses;
+  $('doseNote').textContent = doses >= 50 ? '· медик уволился' : doses >= 20 ? '· медик в шоке' : doses >= 10 ? '· уже зависимость от лечения' : '';
+};
+showDoses();
+let lastQuote = -1;
+$('doseBtn').addEventListener('click', e => {
+  let i; do i = Math.floor(Math.random() * DOSES.length); while (i === lastQuote);
+  lastQuote = i;
+  $('quote').textContent = DOSES[i];
+  doses++; showDoses();
+  try { localStorage.setItem('doses', doses); } catch {}
+  document.body.classList.remove('shake'); void document.body.offsetWidth; document.body.classList.add('shake');
+  navigator.vibrate?.(120);
+  const r = e.currentTarget.getBoundingClientRect();
+  burst(r.left + r.width / 2, r.top + r.height / 2, 40);
+});
+
+$('share').addEventListener('click', async () => {
+  const data = { title: 'CoD-ломка', text: 'Евгений, держись. Отсчёт до новой Call of Duty:', url: location.origin + location.pathname };
+  try {
+    if (navigator.share) await navigator.share(data);
+    else { await navigator.clipboard.writeText(data.url); toast('📋 Ссылка скопирована. Отправляй Евгению.'); }
+  } catch {}
+});
+
+// --- частицы: пепел/искры + салют
+const cv = $('fx'), ctx = cv.getContext('2d');
+let W, H, DPR, parts = [];
+function resize() {
+  DPR = Math.min(devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+const ember = (y = H + 10) => ({ x: Math.random() * W, y, vx: (Math.random() - .5) * .3, vy: -(.3 + Math.random() * .9), r: .6 + Math.random() * 1.8, a: .2 + Math.random() * .6, hue: 18 + Math.random() * 25, g: 0, life: Infinity });
+function burst(x = W / 2, y = H / 2, n = 260) {
+  if (reduce) return;
+  for (let i = 0; i < n; i++) {
+    const ang = Math.random() * Math.PI * 2, sp = 2 + Math.random() * (n > 100 ? 9 : 5);
+    parts.push({ x, y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, r: 1 + Math.random() * 2.2, a: 1, hue: Math.random() < .8 ? 15 + Math.random() * 35 : 95, g: .09, life: 60 + Math.random() * 70 });
+  }
+}
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.globalCompositeOperation = 'lighter';
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const p = parts[i];
+    p.x += p.vx; p.y += p.vy; p.vy += p.g;
+    if (p.g) { p.vx *= .985; p.life--; p.a = Math.max(0, p.life / 90); }
+    else p.x += Math.sin((p.y + i) * .01) * .2;
+    if (p.life <= 0 || p.y < -10 || p.y > H + 20) { if (p.g) parts.splice(i, 1); else Object.assign(p, ember()); continue; }
+    ctx.fillStyle = `hsla(${p.hue},100%,60%,${p.a})`;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 7); ctx.fill();
+  }
+  requestAnimationFrame(draw); // ponytail: rAF сам засыпает в фоновой вкладке
+}
+if (!reduce) {
+  resize(); addEventListener('resize', resize);
+  const n = Math.min(90, Math.round(W * H / 16000));
+  for (let i = 0; i < n; i++) parts.push(ember(Math.random() * H));
+  draw();
+}
+
+frame();
+</script>
+</body>
+</html>
