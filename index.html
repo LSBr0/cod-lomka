@@ -157,6 +157,14 @@ h1 span{display:block;font-size:1.35em;background:linear-gradient(180deg,#fff 10
 .count{font-size:12px;color:var(--mute);letter-spacing:.1em}
 .count b{color:var(--acc)}
 
+/* news */
+.news{--c:var(--ok);max-width:760px;margin:26px auto 0;padding:16px 20px;display:flex;gap:16px;align-items:center;text-align:left;
+  border-color:rgba(140,255,90,.3);animation:in .7s both cubic-bezier(.2,.8,.2,1)}
+.news[hidden]{display:none}
+.news b{color:var(--ok)}
+.flashtag{flex:none;font:12px var(--head);letter-spacing:.14em;text-transform:uppercase;color:#071000;background:var(--ok);padding:6px 10px;animation:blink 1.2s infinite}
+@media (max-width:760px){.news{flex-direction:column;align-items:flex-start}}
+
 /* ticker */
 .ticker{position:relative;z-index:1;overflow:hidden;border-block:1px solid var(--line);background:rgba(255,122,26,.06);
   font-size:13px;letter-spacing:.06em;white-space:nowrap}
@@ -221,6 +229,10 @@ footer{position:relative;z-index:1;text-align:center;color:var(--mute);font-size
         <div class="unit hud"><b class="num" id="s">--</b><span class="lbl" id="sl">секунд</span></div>
       </div>
       <p class="sub">+<b id="ms">000</b> мс · Высадка 23.10.2026 · 00:00 МСК</p>
+      <div class="news hud" id="news" hidden>
+        <span class="flashtag">⚡ Срочная новость</span>
+        <p><b>Кампания вышла для предзаказавших!</b> Евгений, пиу-пиу официально разрешено. До мультиплеера — по таймеру выше.</p>
+      </div>
     </section>
 
     <div class="grid">
@@ -285,6 +297,7 @@ const q = new URLSearchParams(location.search);
 const test = +q.get('test'); // ?test=10 — релиз через 10 секунд
 const TARGET = test > 0 ? Date.now() + test * 1e3 : Date.parse('2026-10-23T00:00:00+03:00');
 const START = Date.parse('2026-08-01T00:00:00+03:00'); // ponytail: условное «начало ожидания» для шкалы
+const CAMPAIGN = q.has('news') ? 0 : Date.parse('2026-10-16T00:00:00+03:00'); // ранний доступ к кампании; ?news — показать сразу
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const SYMPTOMS = [
@@ -321,6 +334,7 @@ const RADIO = [
   'Перехвачено: «ещё чуть-чуть, ещё чуть-чуть…»',
   'Сводка: соседи жалуются на звуки выстрелов из прошлой части',
   'Че за Lotus?',
+  'Перехвачено от Евгения: «скучаю по пиу пиу»',
 ];
 const DOSES = [
   'Посмотрел геймплей 10 минут. Отпустило на 4 секунды.',
@@ -348,8 +362,16 @@ const plural = (n, f) => f[(n % 10 === 1 && n % 100 !== 11) ? 0 : (n % 10 >= 2 &
 const pad = n => String(n).padStart(2, '0');
 
 // --- статика: тикер, шкала, ЭКГ
-const tickerHtml = RADIO.map(t => `<span>${t}</span>`).join('');
-$('ticker').innerHTML = tickerHtml + tickerHtml; // дубль для бесшовной прокрутки
+function ticker() {
+  const html = RADIO.map(t => `<span>${t}</span>`).join('');
+  $('ticker').innerHTML = html + html; // дубль для бесшовной прокрутки
+}
+ticker();
+function campaignNews() {
+  $('news').hidden = false;
+  RADIO.unshift('СРОЧНО: кампания открыта для предзаказавших. Пиу-пиу разрешено');
+  ticker();
+}
 $('bars').innerHTML = '<i></i>'.repeat(20);
 const beat = 'l26 0 l5 -4 l5 4 l5 0 l3 8 l4 -24 l4 28 l4 -12 l10 0 l6 -6 l8 6 l20 0';
 $('ecg').setAttribute('d', 'M0 20 ' + Array(4).fill(beat).join(' '));
@@ -383,6 +405,7 @@ function frame() {
     document.title = `${d}д ${pad(h)}:${pad(m)}:${pad(s)} · CoD-ломка`;
     $('clock').textContent = 'МСК ' + new Date(now).toLocaleTimeString('ru-RU', { timeZone: 'Europe/Moscow' });
     vitals(now, d);
+    if (now >= CAMPAIGN && $('news').hidden) campaignNews();
   }
   requestAnimationFrame(frame);
 }
