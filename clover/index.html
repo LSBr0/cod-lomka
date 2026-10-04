@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Клевер-ломка · Отсчёт для Константина</title>
+<meta name="description" content="Пациент: Константин. Диагноз: острая клевер-ломка. Новая серия Black Clover — раз в неделю. Держаться.">
+<meta property="og:title" content="Клевер-ломка · Отсчёт для Константина">
+<meta property="og:description" content="Пациент: Константин. Диагноз: острая клевер-ломка. До новой серии Black Clover держаться.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-42 -42 84 84'><g fill='%23d9b04a' stroke='%23000' stroke-width='1.5'><path id='l' d='M0 0C-5-8-15-15-15-26C-15-34-9-39-4.5-39C-2-39 0-37.5 0-35C0-37.5 2-39 4.5-39C9-39 15-34 15-26C15-15 5-8 0 0Z'/><use href='%23l' transform='rotate(62)'/><use href='%23l' transform='rotate(128)'/><use href='%23l' transform='rotate(-62)'/><use href='%23l' transform='rotate(-128)'/><path d='M-3.2 0L3.2 0L4 29L10 37L-10 37L-4 29Z'/></g></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- палитра и шрифты — с официального bclover.jp: Kolker Brush, Fraunces, Noto Serif (JP только на слоган) -->
+<link href="https://fonts.googleapis.com/css2?family=Kolker+Brush&family=UnifrakturCook:wght@700&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..700&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700&text=%E9%99%90%E7%95%8C%E3%82%92%E3%80%81%E6%96%AC%E3%82%8A%E9%96%8B%E3%81%91%E3%80%82&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#000; --red:#c40002; --red-hi:#ff2a1f; --blood:#630000; --deep:#2d0000; --gold:#a57c0c; --gold-hi:#d9b04a;
+  --txt:#f1ebe4; --mute:#9a8f88;
+  --brush:"Kolker Brush",cursive; --goth:"UnifrakturCook","Old English Text MT",serif; --serif:"Fraunces",Georgia,serif; --body:"Noto Serif",Georgia,serif; --jp:"Noto Serif JP",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;background:#000}
+body{
+  min-height:100dvh;color:var(--txt);font:15px/1.6 var(--body);overflow-x:hidden;
+  background:
+    radial-gradient(ellipse 900px 520px at 50% 0%,rgba(196,0,2,.38),transparent 65%),
+    radial-gradient(ellipse 700px 600px at 0% 100%,rgba(99,0,0,.55),transparent 60%),
+    radial-gradient(ellipse 600px 500px at 100% 60%,rgba(45,0,0,.7),transparent 60%),
+    repeating-linear-gradient(118deg,transparent 0 140px,rgba(99,0,0,.16) 140px 300px),
+    #000;
+}
+/* гранж-текстура как на официальном фоне + виньетка */
+body::before,body::after{content:"";position:fixed;inset:0;pointer-events:none}
+body::before{z-index:0;opacity:.5;mix-blend-mode:screen;
+  background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.25'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>")}
+body::after{z-index:50;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.75))}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+
+.wrap{position:relative;z-index:2;max-width:1120px;margin:0 auto;padding:0 16px}
+
+/* --- вступление: разрез мечом */
+#intro{position:fixed;inset:0;z-index:80;pointer-events:none;overflow:hidden}
+#intro .rot{position:absolute;inset:-40%;transform:rotate(-9deg)}
+#intro i{position:absolute;left:0;right:0;height:50%;background:#000}
+#intro .a{top:0;animation:openA .8s .62s cubic-bezier(.75,0,.2,1) forwards}
+#intro .b{bottom:0;animation:openB .8s .62s cubic-bezier(.75,0,.2,1) forwards}
+#intro .cut{position:absolute;left:0;right:0;top:50%;height:3px;margin-top:-1.5px;background:#fff;
+  box-shadow:0 0 6px #fff,0 0 18px var(--red-hi),0 0 60px var(--red),0 0 120px var(--red);
+  transform:scaleX(0);transform-origin:left;animation:cut .38s .15s cubic-bezier(.85,0,.15,1) forwards,fade .4s .75s forwards}
+@keyframes cut{to{transform:scaleX(1)}}
+@keyframes fade{to{opacity:0}}
+@keyframes openA{to{transform:translateY(-102%)}}
+@keyframes openB{to{transform:translateY(102%)}}
+
+/* --- верхняя панель */
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0;font:12px var(--serif);
+  letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.onair{display:flex;align-items:center;gap:10px;background:var(--red);color:#fff;padding:5px 14px 5px 12px;font-weight:600}
+.onair i{width:8px;height:8px;border-radius:50%;background:#fff;animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.2}}
+.op{flex:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#clock{font-variant-numeric:tabular-nums;color:var(--gold-hi)}
+
+/* --- hero */
+.hero{position:relative;text-align:center;padding:clamp(18px,4vw,40px) 0 30px}
+.flow{position:absolute;left:50%;top:clamp(40px,6vw,70px);width:100vw;margin-left:-50vw;overflow:hidden;pointer-events:none;z-index:-1}
+.flow div{display:inline-block;white-space:nowrap;font:italic 700 clamp(110px,20vw,280px)/1 var(--serif);
+  color:rgba(196,0,2,.13);-webkit-text-stroke:1px rgba(196,0,2,.4);animation:marquee 70s linear infinite}
+.flow span{padding-right:.4em}
+@keyframes marquee{to{transform:translateX(-50%)}}
+.catch{position:absolute;right:clamp(0px,2vw,24px);top:30px;writing-mode:vertical-rl;font:700 clamp(22px,2.6vw,34px)/1.2 var(--jp);
+  letter-spacing:.18em;color:#fff;text-shadow:0 0 18px rgba(255,0,0,.6)}
+.catch small{display:block;font:12px var(--body);letter-spacing:.3em;color:var(--red-hi);margin-top:14px;text-shadow:none}
+
+/* печать гримуара */
+.seal{position:relative;width:clamp(150px,22vw,210px);aspect-ratio:1;margin:0 auto}
+.seal svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.seal .ring{animation:spin 50s linear infinite}
+.seal .ring text{font:600 8px var(--serif);fill:var(--gold-hi)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.clv{fill:url(#goldg);animation:demon 3.2s ease-in-out infinite}
+@keyframes demon{50%{filter:drop-shadow(0 0 6px #ff0000) drop-shadow(0 0 2px #ff6a5c)}}
+
+.kicker{display:inline-flex;align-items:center;gap:12px;margin-top:20px;font:13px var(--body);letter-spacing:.24em;text-transform:uppercase;color:var(--gold-hi)}
+.kicker::before,.kicker::after{content:"";width:clamp(24px,8vw,70px);height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.kicker::after{transform:scaleX(-1)}
+h1{margin:10px 0 0;font-weight:400}
+h1 .pre{display:block;font:700 clamp(15px,2vw,20px) var(--body);letter-spacing:.3em;text-transform:uppercase;color:var(--mute)}
+/* логотип как на постере: готика + клевер между словами */
+h1 .logo{display:flex;justify-content:center;align-items:center;gap:.06em;font:700 clamp(52px,11.5vw,140px)/1.05 var(--goth);color:#fff;
+  text-shadow:0 0 20px #f00,0 0 50px rgba(196,0,2,.6);animation:anti 7s infinite}
+h1 .logo svg{width:.5em;height:.5em;flex:none;fill:#fff;filter:drop-shadow(0 0 10px #f00);margin-top:.08em}
+h1 .season{display:block;font:italic 500 clamp(14px,2vw,20px) var(--serif);letter-spacing:.4em;color:var(--red-hi);margin-top:4px;text-transform:uppercase}
+/* всплеск антимагии */
+@keyframes anti{
+  0%,91%,100%{transform:none;text-shadow:0 0 20px #f00,0 0 50px rgba(196,0,2,.6)}
+  92%{transform:translate(-3px,0) skewX(-8deg);text-shadow:4px 0 0 #000,-4px 0 0 var(--red),0 0 30px #f00}
+  94%{transform:translate(3px,0)}
+  96%{transform:skewX(4deg)}
+}
+
+.cd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:34px auto 0;max-width:920px;position:relative}
+.cd::before,.cd::after{content:"";position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold) 20%,var(--gold) 80%,transparent)}
+.cd::before{top:0}.cd::after{bottom:0}
+.unit{padding:clamp(16px,3vw,28px) 4px clamp(12px,2vw,18px)}
+.unit+.unit{border-left:1px solid;border-image:linear-gradient(transparent,var(--red),transparent) 1}
+.num{display:block;font:600 clamp(52px,11.5vw,138px)/1 var(--serif);font-variation-settings:"opsz" 144;font-variant-numeric:lining-nums tabular-nums;
+  color:#fff;text-shadow:0 0 24px rgba(255,0,0,.55)}
+.num.tick{animation:tick .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes tick{0%{opacity:.1;filter:blur(6px);transform:scale(1.12);color:var(--red-hi)}100%{opacity:1;filter:none;transform:none}}
+.lbl{display:block;margin-top:10px;font:clamp(10px,1.4vw,13px) var(--body);letter-spacing:.3em;text-transform:uppercase;color:var(--red-hi)}
+.sub{margin-top:18px;font-size:14px;color:var(--mute);letter-spacing:.06em}
+.sub b{color:#fff}
+.sub small{color:var(--mute)}
+
+.news{max-width:760px;margin:24px auto 0;padding:14px 20px;display:flex;gap:16px;align-items:center;text-align:left;
+  background:linear-gradient(90deg,rgba(196,0,2,.35),rgba(45,0,0,.6));border:1px solid var(--red);animation:rise .7s both}
+.news[hidden]{display:none}
+.news b{color:#fff}
+.news a{color:var(--gold-hi)}
+.flashtag{flex:none;font:38px/1 var(--brush);color:#fff;text-shadow:0 0 12px #f00;animation:blink 1.4s infinite}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+@media (max-width:760px){.news{flex-direction:column;align-items:flex-start;gap:8px}}
+
+/* --- карточки */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding:34px 0 40px}
+.card{position:relative;padding:22px 22px 24px;min-width:0;
+  background:linear-gradient(180deg,rgba(45,0,0,.55),rgba(0,0,0,.78));border:1px solid rgba(196,0,2,.35)}
+/* золотые уголки */
+.card::before,.card::after{content:"";position:absolute;width:22px;height:22px;border:1px solid var(--gold);pointer-events:none}
+.card::before{top:5px;left:5px;border-right:0;border-bottom:0}
+.card::after{bottom:5px;right:5px;border-left:0;border-top:0}
+.ttl{margin-bottom:16px;font-weight:400}
+.ttl .en{display:block;font:clamp(46px,6vw,60px)/.85 var(--brush);color:#fff;text-shadow:0 0 20px #f00}
+.ttl .ru{display:flex;align-items:center;gap:10px;margin-top:8px;font:12px var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--red-hi)}
+.ttl .ru::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+.row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid rgba(165,124,12,.18);font-size:14px}
+.row>span:first-child{color:var(--mute)}
+.row b{text-align:right;font-weight:700}
+.row small{color:var(--mute);font-weight:400}
+.row.next{color:#fff}
+.row.next b{color:var(--red-hi)}
+.row.next>span:first-child{color:#fff}
+.row.next>span:first-child::before{content:"▸ ";color:var(--red-hi)}
+.row.done{opacity:.38}
+.stamp{display:inline-block;margin-top:16px;font:700 13px var(--body);color:var(--red-hi);border:2px solid var(--red-hi);padding:4px 10px;
+  transform:rotate(-4deg);letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+
+.ecg{margin-top:14px;height:56px;overflow:hidden;position:relative;border:1px solid rgba(196,0,2,.3);background:
+  repeating-linear-gradient(90deg,transparent 0 19px,rgba(196,0,2,.1) 19px 20px),repeating-linear-gradient(0deg,transparent 0 13px,rgba(196,0,2,.1) 13px 14px)}
+.ecg svg{position:absolute;left:0;top:0;height:100%;width:200%;animation:ecg var(--beat,1s) linear infinite}
+.ecg path{fill:none;stroke:var(--red-hi);stroke-width:1.6;filter:drop-shadow(0 0 4px #f00);vector-effect:non-scaling-stroke}
+@keyframes ecg{to{transform:translateX(-50%)}}
+.bpm{color:var(--red-hi);font-variant-numeric:tabular-nums}
+
+.big{font:600 clamp(56px,8vw,78px)/1 var(--serif);font-variation-settings:"opsz" 144;font-variant-numeric:tabular-nums;color:#fff;text-shadow:0 0 20px rgba(255,0,0,.5)}
+.big small{font-size:.38em;color:var(--mute)}
+.level{margin:8px 0 16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:14px}
+.bars{display:grid;grid-template-columns:repeat(20,1fr);gap:4px;height:28px}
+.bars i{background:rgba(255,255,255,.05);transform:skewX(-14deg);transition:background .4s}
+.bars i.on{background:linear-gradient(180deg,var(--gold-hi),var(--gold));box-shadow:0 0 8px rgba(165,124,12,.5)}
+.bars i.on.hot{background:linear-gradient(180deg,#ff6a5c,var(--red));box-shadow:0 0 12px rgba(255,0,0,.6);animation:throb .8s ease-in-out infinite alternate}
+@keyframes throb{to{opacity:.55}}
+.scale{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--mute);letter-spacing:.08em}
+
+.pages{display:grid;grid-template-columns:repeat(12,1fr);gap:5px;margin-top:18px}
+.pages i{aspect-ratio:3/4;border:1px solid rgba(165,124,12,.35);background:rgba(0,0,0,.45);font:600 10px var(--serif);font-style:normal;
+  display:grid;place-items:center;color:var(--mute)}
+.pages i.on{background:linear-gradient(180deg,#7a0002,#2d0000);color:#fff;border-color:var(--red)}
+.pages i.now{border-color:#fff;color:#fff;box-shadow:0 0 12px #f00,inset 0 0 8px rgba(255,0,0,.6);animation:throb .9s ease-in-out infinite alternate}
+.count{font-size:12px;color:var(--mute);letter-spacing:.08em}
+.count b{color:#fff}
+
+.sym{list-style:none;display:grid;gap:10px}
+.sym li{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-left:2px solid var(--red);background:linear-gradient(90deg,rgba(196,0,2,.14),transparent);
+  animation:in .6s both cubic-bezier(.2,.8,.2,1)}
+.sym li:nth-child(2){animation-delay:.12s}.sym li:nth-child(3){animation-delay:.24s}
+.sym li::before{content:"✠";color:var(--gold-hi);flex:none}
+@keyframes in{from{opacity:0;transform:translateX(-12px)}}
+
+/* экстренная помощь: печать-кнопка */
+.dose{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,4vw,44px);align-items:center}
+.sealbtn{appearance:none;border:0;background:none;cursor:pointer;width:clamp(150px,20vw,190px);aspect-ratio:1;position:relative;border-radius:50%;
+  transition:transform .15s}
+.sealbtn svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sealbtn .ring{animation:spin 26s linear infinite reverse}
+.sealbtn .ring text{font:700 8.5px var(--body);fill:#fff}
+.sealbtn .core{fill:url(#btnr);stroke:var(--gold);stroke-width:1}
+.sealbtn .cta{font:21px var(--brush);fill:#fff}
+.sealbtn:hover{transform:scale(1.04)}
+.sealbtn:hover .core{filter:drop-shadow(0 0 14px #f00)}
+.sealbtn:active{transform:scale(.95)}
+.sealbtn:focus-visible{outline:2px solid #fff;outline-offset:4px}
+.quote{min-height:3.2em;font-size:16px;color:#fff;margin-bottom:12px}
+.quote::before{content:"— ";color:var(--red-hi)}
+.ghost{appearance:none;cursor:pointer;margin-top:14px;font:700 13px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold-hi);
+  background:transparent;border:1px solid var(--gold);padding:12px 18px;transition:background .2s,color .2s}
+.ghost:hover{background:var(--gold);color:#000}
+.ghost:focus-visible{outline:2px solid #fff;outline-offset:3px}
+@media (max-width:760px){.dose{grid-template-columns:1fr;justify-items:center;text-align:center}}
+
+/* --- лента */
+.ticker{position:relative;z-index:2;overflow:hidden;background:rgba(0,0,0,.6);border-block:1px solid var(--blood);font-size:13px;letter-spacing:.05em;white-space:nowrap}
+.ticker .tag{position:absolute;left:0;top:0;bottom:0;z-index:2;display:flex;align-items:center;padding:0 16px;
+  background:var(--red);color:#fff;font:600 12px var(--serif);letter-spacing:.2em;text-transform:uppercase}
+.track{display:inline-block;padding:12px 0;animation:marquee 85s linear infinite}
+.track span{margin-right:56px}
+.track span::before{content:"✠ ";color:var(--gold-hi)}
+
+footer{position:relative;z-index:2;text-align:center;color:var(--mute);font-size:12px;padding:24px 16px 36px;letter-spacing:.04em}
+footer em{display:block;font:italic 15px var(--serif);color:var(--red-hi);margin-bottom:8px;letter-spacing:.06em}
+footer a{color:var(--gold-hi)}
+
+#toast{position:fixed;left:50%;bottom:24px;z-index:60;transform:translate(-50%,calc(100% + 40px));transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  background:#0a0000;border:1px solid var(--red);padding:12px 18px;font-size:14px;max-width:calc(100% - 32px);box-shadow:0 0 30px rgba(196,0,2,.4)}
+#toast.show{transform:translate(-50%,0)}
+
+.shake .wrap{animation:shake .5s}
+@keyframes shake{10%,90%{transform:translate(-2px,1px)}20%,80%{transform:translate(4px,-2px)}30%,50%,70%{transform:translate(-6px,2px) rotate(-.4deg)}40%,60%{transform:translate(6px,-1px) rotate(.4deg)}}
+
+#final{position:fixed;inset:0;z-index:40;display:grid;place-items:center;text-align:center;padding:24px;
+  background:radial-gradient(circle at center,rgba(196,0,2,.45),rgba(0,0,0,.95) 62%)}
+#final[hidden]{display:none}
+#final h2{font:clamp(70px,15vw,170px)/.9 var(--brush);font-weight:400;color:#fff;text-shadow:0 0 30px #f00;animation:slam .8s cubic-bezier(.2,1.4,.3,1) both}
+#final p{font:700 clamp(17px,3vw,26px) var(--body);color:var(--gold-hi);margin:18px 0 28px;animation:in .6s .5s both}
+@keyframes slam{from{transform:scale(3);opacity:0;filter:blur(10px)}}
+.flash{position:fixed;inset:0;z-index:45;pointer-events:none;animation:flash 1s forwards}
+@keyframes flash{0%{background:#000}25%{background:rgba(255,0,0,.75)}100%{background:transparent}}
+
+@media (max-width:760px){
+  .grid{grid-template-columns:1fr}
+  .op,.catch{display:none}
+  .card{padding:18px 16px 20px}
+  .pages{gap:3px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  #fx,#intro{display:none}
+}
+</style>
+</head>
+<body>
+<div id="intro" aria-hidden="true"><div class="rot"><i class="a"></i><i class="b"></i><b class="cut"></b></div></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<!-- общие SVG-заготовки: лист клевера (сердечко кончиком к центру) и градиенты -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- клевер с логотипа 2-го сезона: 5 листьев-сердечек (0°, ±62°, ±128°), тонкие прорези, стебель с основанием -->
+    <path id="leaf" d="M0 0C-5-8-15-15-15-26C-15-34-9-39-4.5-39C-2-39 0-37.5 0-35C0-37.5 2-39 4.5-39C9-39 15-34 15-26C15-15 5-8 0 0Z"/>
+    <mask id="cgap" maskUnits="userSpaceOnUse" x="-60" y="-60" width="120" height="120">
+      <rect x="-60" y="-60" width="120" height="120" fill="#fff"/>
+      <path d="M3.6-6L25.8-42.9M-3.6-6L-25.8-42.9M7 .6L49.8 4.4M-7 .6L-49.8 4.4" stroke="#000" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M-3.2 9L3.2 9L4 29L10 37L-10 37L-4 29Z" stroke="#000" stroke-width="5" stroke-linejoin="round"/>
+    </mask>
+    <g id="clover">
+      <g mask="url(#cgap)">
+        <use href="#leaf"/><use href="#leaf" transform="rotate(62)"/><use href="#leaf" transform="rotate(128)"/>
+        <use href="#leaf" transform="rotate(-62)"/><use href="#leaf" transform="rotate(-128)"/>
+      </g>
+      <path d="M-3.2 0L3.2 0L4 29L10 37L-10 37L-4 29Z"/>
+    </g>
+    <linearGradient id="goldg" gradientUnits="userSpaceOnUse" x1="0" y1="-39" x2="0" y2="0"><stop offset="0" stop-color="#ffe9a3"/><stop offset=".55" stop-color="#d9b04a"/><stop offset="1" stop-color="#7a5a06"/></linearGradient>
+    <radialGradient id="btnr"><stop offset="0" stop-color="#c40002"/><stop offset=".75" stop-color="#5a0000"/><stop offset="1" stop-color="#1a0000"/></radialGradient>
+    <path id="circ" d="M50 50m-41 0a41 41 0 1 1 82 0a41 41 0 1 1 -82 0"/>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="bar">
+    <span class="onair"><i></i>On air</span>
+    <span class="op">TV Tokyo · каждую субботу · 23:00 JST / 17:00 МСК</span>
+    <span id="clock">МСК --:--:--</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="flow" aria-hidden="true"><div><span>Black Clover</span><span>Black Clover</span><span>Black Clover</span><span>Black Clover</span></div></div>
+      <p class="catch" lang="ja">限界を、斬り開け。<small>прорубись сквозь предел</small></p>
+
+      <div class="seal" aria-hidden="true">
+        <svg viewBox="0 0 100 100">
+          <g class="ring" style="transform-origin:50px 50px">
+            <circle cx="50" cy="50" r="48" fill="none" stroke="#a57c0c" stroke-width=".6"/>
+            <circle cx="50" cy="50" r="35" fill="none" stroke="#a57c0c" stroke-width=".6"/>
+            <text><textPath href="#circ" textLength="255" lengthAdjust="spacingAndGlyphs">BLACK CLOVER ✠ 2ND SEASON ✠ ANTI MAGIC ✠</textPath></text>
+          </g>
+          <circle cx="50" cy="50" r="33" fill="#000"/>
+          <use href="#clover" class="clv" transform="translate(50 49) scale(.66)"/>
+        </svg>
+      </div>
+
+      <p class="kicker">Только для Константина</p>
+      <h1><span class="pre">До новой серии</span><span class="logo">Black<svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#clover"/></svg>Clover</span><span class="season">2nd Season</span></h1>
+
+      <div class="cd" role="timer" aria-label="Обратный отсчёт до новой серии">
+        <div class="unit"><b class="num" id="d">--</b><span class="lbl" id="dl">дней</span></div>
+        <div class="unit"><b class="num" id="h">--</b><span class="lbl" id="hl">часов</span></div>
+        <div class="unit"><b class="num" id="m">--</b><span class="lbl" id="ml">минут</span></div>
+        <div class="unit"><b class="num" id="s">--</b><span class="lbl" id="sl">секунд</span></div>
+      </div>
+      <p class="sub" id="sub">—</p>
+      <div class="news" id="news" hidden>
+        <span class="flashtag">Out now!</span>
+        <p id="newsText"></p>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2 class="ttl"><span class="en">Status</span><span class="ru">Медкарта № BC-171</span></h2>
+        <div class="row"><span>Пациент</span><b>Константин</b></div>
+        <div class="row"><span>Диагноз</span><b>Острая клевер-ломка</b></div>
+        <div class="row"><span>Пульс</span><b class="bpm"><span id="bpm">--</span> уд/мин</b></div>
+        <div class="row"><span>Прогноз</span><b id="prognosis">—</b></div>
+        <div class="ecg"><svg viewBox="0 0 400 40" preserveAspectRatio="none" aria-hidden="true"><path id="ecg"/></svg></div>
+        <span class="stamp">Лечится только новой серией</span>
+      </section>
+
+      <section class="card">
+        <h2 class="ttl"><span class="en">Despair</span><span class="ru">Уровень ломки · обнуляется по субботам</span></h2>
+        <div class="big"><span id="pct">--</span><small>%</small></div>
+        <div class="level" id="level">—</div>
+        <div class="bars" id="bars"></div>
+        <div class="scale"><span>Только посмотрел</span><span>Перечитывает мангу</span><span>☠</span></div>
+      </section>
+
+      <section class="card">
+        <h2 class="ttl"><span class="en">Schedule</span><span class="ru">Расписание · сб 17:00 МСК</span></h2>
+        <div id="sched"></div>
+        <div class="pages" id="pages" title="Серии сезона"></div>
+        <p class="count" style="margin-top:10px">Сезон: <b id="seasonTxt">—</b></p>
+      </section>
+
+      <section class="card">
+        <h2 class="ttl"><span class="en">Symptoms</span><span class="ru">Симптомы дня · <span id="symday"></span></span></h2>
+        <ul class="sym" id="sym"></ul>
+      </section>
+
+      <section class="card dose">
+        <button class="sealbtn" id="doseBtn" type="button" aria-label="Открыть гримуар — принять дозу">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <g class="ring" style="transform-origin:50px 50px">
+              <text><textPath href="#circ" textLength="255" lengthAdjust="spacingAndGlyphs">НЕ СДАВАЙСЯ ✠ ЭТО И ЕСТЬ МОЯ МАГИЯ ✠</textPath></text>
+            </g>
+            <circle class="core" cx="50" cy="50" r="34"/>
+            <use href="#clover" class="clv" transform="translate(50 42) scale(.34)"/>
+            <text class="cta" x="50" y="75" text-anchor="middle">Open</text>
+          </svg>
+        </button>
+        <div>
+          <h2 class="ttl"><span class="en">Grimoire</span><span class="ru">Экстренная помощь · самолечение</span></h2>
+          <p class="quote" id="quote">Жми на печать, если до субботы уже не дотянуть.</p>
+          <p class="count">Принято доз: <b id="doses">0</b> <span id="doseNote"></span></p>
+          <button class="ghost" id="share" type="button">🕊 Отправить магического голубя</button>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div class="ticker" aria-label="Вести из королевства">
+  <span class="tag">Вести</span>
+  <div class="track" id="ticker"></div>
+</div>
+
+<footer><em>В пятом листе клевера живёт демон.</em>Фанатская шутка. Не связано с Pierrot, Shueisha и TV Tokyo. · <a href="../">CoD-ломка Евгения</a></footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<div id="final" hidden>
+  <div>
+    <h2>Season<br>Complete</h2>
+    <p>Константин, ты не сдался. Это и есть твоя магия.</p>
+    <button class="ghost" type="button" onclick="burst()">✠ Ещё салют</button>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const q = new URLSearchParams(location.search);
+
+// --- расписание: TV Tokyo, сб 23:00 JST = 17:00 МСК, 1-я серия 2-го сезона = 171-я общая
+const EP1 = Date.parse('2026-10-03T17:00:00+03:00');
+const TOTAL = 24;   // ponytail: заявлено ~24, поменять когда объявят точно
+const OFFSET = 170; // серий в первом сезоне
+const SKIP = [];    // ponytail: субботы-перерывы ('2026-12-26'), дописать когда TV Tokyo объявит
+const AIRS = [];
+for (let t = EP1; AIRS.length < TOTAL; t += 7 * 864e5) {
+  if (!SKIP.includes(new Date(t).toLocaleDateString('sv', { timeZone: 'Europe/Moscow' }))) AIRS.push(t);
+}
+// ?test=10 — следующая серия «выйдет» через 10 секунд (время на странице сдвигается)
+const test = +q.get('test');
+const realNext = AIRS.find(t => t > Date.now());
+const SHIFT = test > 0 && realNext ? realNext - Date.now() - test * 1e3 : 0;
+const now = () => Date.now() + SHIFT;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+setTimeout(() => $('intro').remove(), 1600);
+
+const SYMPTOMS = [
+  'Орёт «Я стану Королём Магов!» в лифте. Соседи уже в курсе.',
+  'Отжимается по 1000 раз, чтобы «время шло быстрее». Не идёт.',
+  'Машет шваброй как антимагическим мечом.',
+  'Называет кота Неро. Кот не согласен.',
+  'В пятницу вечером уже сидит у экрана. На всякий случай.',
+  'Говорит «Не сдаваться — вот моя магия», когда не открывается банка.',
+  'Пытается поговорить со своим гримуаром. Это блокнот из Фикс Прайса.',
+  'Обновляет Crunchyroll в субботу с 16:58.',
+  'Разделил всех коллег по орденам. Себя записал в Чёрных Быков.',
+  'Сделал из пледа плащ рыцаря-чародея. Носит дома.',
+  'Слышит опенинг, даже когда его никто не включал.',
+  'Спорит с экраном, почему серия всего 23 минуты.',
+  'Пересмотрел 170 серий. Готовится к следующей. Пересматривает 171-ю.',
+  'Тренирует крик Асты. Громкость: вся улица.',
+  'Ищет пятилистный клевер во дворе. Нашёл два четырёхлистных и крапиву.',
+  'Отвечает на «как дела?» словами «до субботы осталось…»',
+  'Хочет лечь спать в среду и проснуться в субботу. Не работает.',
+  'Шепчет «Ями, ты где?!» каждый раз, когда кто-то выходит из комнаты.',
+];
+const RADIO = [
+  'Королевство Клевер: новая серия — в субботу, 17:00 МСК',
+  'Константин замечен с мангой в руках. Статус: держится',
+  'Ями Сукэхиро: «Превзойди свои пределы прямо сейчас». Константин: «Я пытаюсь ждать!»',
+  'Тёмная Триада наступает. Константин наступает на Crunchyroll',
+  'Разведка: серию не перенесли. Повторяю: НЕ перенесли',
+  'Пять лет ждал второй сезон — неделю тоже переживёт (наверное)',
+  'Орден Чёрных Быков снова разнёс базу. Ремонт до субботы',
+  'Магический голубь доставил: «осталось чуть-чуть»',
+  'Аста кричит. Это нормально. Это всегда так',
+  'Лекари: свежий воздух, сон, вода. Пациент выбрал перечитать мангу',
+  'Перехвачено: «а можно две серии в неделю?» — Запрос отклонён',
+  'Королевство Пик: «мы тоже ждём субботу»',
+];
+const DOSES = [
+  'Посмотрел опенинг 5 раз подряд. Отпустило на 3 секунды.',
+  'Пересмотрел битву с Лихтом. Стало только хуже — хочется дальше.',
+  'Глубокий вдох. Это просто аниме… НЕ ПРОСТО.',
+  'Доза принята. Побочка: желание купить меч Асты на маркетплейсе.',
+  'Отжался 50 раз. Суббота ближе не стала.',
+  'Перечитал главу манги. Теперь знаешь спойлер. Поздравляю.',
+  'Лекарь Оуэн: ещё доза — и проверяем ману.',
+  'Помогло. Шутка. Не помогло.',
+  'Обнял гримуар. Гримуар выплюнул лист клевера.',
+  'Посмотрел на часы. Прошла минута. Не сдавайся, Константин.',
+  'Покричал как Аста. Соседи постучали. Ломка осталась.',
+];
+const LEVELS = [
+  [20, 'Только посмотрел. Счастлив.', '#fff'],
+  [45, 'Обсуждает серию со всеми подряд', 'var(--gold-hi)'],
+  [65, 'Перечитывает мангу', 'var(--gold-hi)'],
+  [80, 'Тренирует крик Асты', '#ff6a5c'],
+  [93, 'Сидит у экрана с пятницы', 'var(--red-hi)'],
+  [101, '☠ Союз с демоном ломки ☠', 'var(--red-hi)'],
+];
+
+const plural = (n, f) => f[(n % 10 === 1 && n % 100 !== 11) ? 0 : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) ? 1 : 2];
+const pad = n => String(n).padStart(2, '0');
+const when = t => new Date(t).toLocaleString('ru-RU', { timeZone: 'Europe/Moscow', weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+const epName = i => `Серия ${i + 1} <small>(${OFFSET + i + 1})</small>`;
+
+// --- статика
+$('ticker').innerHTML = (h => h + h)(RADIO.map(t => `<span>${t}</span>`).join(''));
+$('bars').innerHTML = '<i></i>'.repeat(20);
+$('pages').innerHTML = AIRS.map((_, i) => `<i>${i + 1}</i>`).join('');
+const beat = 'l26 0 l5 -4 l5 4 l5 0 l3 8 l4 -24 l4 28 l4 -12 l10 0 l6 -6 l8 6 l20 0';
+$('ecg').setAttribute('d', 'M0 20 ' + Array(4).fill(beat).join(' '));
+
+const els = { d: $('d'), h: $('h'), m: $('m'), s: $('s') };
+const prev = {};
+function set(k, v) {
+  if (prev[k] === v) return;
+  prev[k] = v;
+  els[k].textContent = v;
+  if (!reduce) { els[k].classList.remove('tick'); void els[k].offsetWidth; els[k].classList.add('tick'); }
+}
+
+let lastSec = -1, lastIdx = -1, symDay = -1, done = false;
+function frame() {
+  const t = now();
+  const idx = AIRS.findIndex(a => a > t); // индекс следующей серии
+  if (idx < 0) return finish();
+  if (idx !== lastIdx) { if (lastIdx >= 0) aired(idx - 1); lastIdx = idx; schedule(idx); }
+
+  const sec = Math.floor((AIRS[idx] - t) / 1e3);
+  if (sec !== lastSec) {
+    lastSec = sec;
+    const d = Math.floor(sec / 86400), h = Math.floor(sec / 3600) % 24, m = Math.floor(sec / 60) % 60, s = sec % 60;
+    set('d', pad(d)); set('h', pad(h)); set('m', pad(m)); set('s', pad(s));
+    $('dl').textContent = plural(d, ['день', 'дня', 'дней']);
+    $('hl').textContent = plural(h, ['час', 'часа', 'часов']);
+    $('ml').textContent = plural(m, ['минута', 'минуты', 'минут']);
+    $('sl').textContent = plural(s, ['секунда', 'секунды', 'секунд']);
+    document.title = `${d}д ${pad(h)}:${pad(m)}:${pad(s)} · Клевер-ломка`;
+    $('clock').textContent = 'МСК ' + new Date(t).toLocaleTimeString('ru-RU', { timeZone: 'Europe/Moscow' });
+    vitals(t, idx, sec);
+  }
+  requestAnimationFrame(frame);
+}
+
+// перерисовка всего, что зависит от номера следующей серии
+function schedule(idx) {
+  $('sub').innerHTML = `${epName(idx)} · <b>${when(AIRS[idx])} МСК</b> · TV Tokyo, затем Crunchyroll`;
+  const from = Math.max(0, idx - 1);
+  $('sched').innerHTML = AIRS.slice(from, from + 5).map((a, k) => {
+    const i = from + k;
+    return `<div class="row ${i < idx ? 'done' : i === idx ? 'next' : ''}"><span>${epName(i)}</span><b>${i < idx ? '✓ ' : ''}${when(a)}</b></div>`;
+  }).join('');
+  [...$('pages').children].forEach((p, i) => p.className = i < idx ? 'on' : i === idx ? 'now' : '');
+  $('seasonTxt').textContent = `вышло ${idx} из ${TOTAL} · впереди ${TOTAL - idx} ${plural(TOTAL - idx, ['суббота', 'субботы', 'суббот'])}`;
+  // плашка «уже вышла» висит сутки после эфира
+  const last = idx - 1, ago = now() - AIRS[last];
+  $('news').hidden = !(last >= 0 && ago < 864e5);
+  if (last >= 0) $('newsText').innerHTML = `<b>Серия ${last + 1} (${OFFSET + last + 1}) уже в эфире!</b> Константин, бегом на <a href="https://www.crunchyroll.com/series/GRE50KV36/black-clover" target="_blank" rel="noopener">Crunchyroll</a>. Ломка временно отменяется.`;
+}
+
+function aired(i) {
+  toast(`✠ Серия ${i + 1} вышла! Бегом смотреть!`);
+  if (!reduce) { const f = document.createElement('div'); f.className = 'flash'; document.body.append(f); setTimeout(() => f.remove(), 1100); }
+  burst();
+}
+
+function vitals(t, idx, secLeft) {
+  // ломка растёт от прошлой серии к следующей и обнуляется в эфир
+  const from = idx > 0 ? AIRS[idx - 1] : AIRS[0] - 7 * 864e5;
+  const p = Math.min(1, Math.max(0, (t - from) / (AIRS[idx] - from)));
+  const pct = Math.round(p * 1000) / 10;
+  $('pct').textContent = pct.toFixed(1);
+  const [, name, color] = LEVELS.find(l => pct < l[0]);
+  $('level').textContent = name; $('level').style.color = color;
+  const on = Math.ceil(p * 20);
+  [...$('bars').children].forEach((b, i) => { b.className = i < on ? (i >= 15 ? 'on hot' : 'on') : ''; });
+
+  const bpm = Math.round(70 + p * 110 + Math.random() * 6);
+  $('bpm').textContent = bpm;
+  document.documentElement.style.setProperty('--beat', (2 * 60 / bpm).toFixed(2) + 's');
+  const hrs = secLeft / 3600;
+  $('prognosis').textContent = hrs > 120 ? 'Ещё переваривает прошлую серию' : hrs > 48 ? 'Ухудшается' : hrs > 3 ? 'Держится на опенинге' : 'Вот-вот выпишут';
+
+  const day = Math.floor(secLeft / 86400);
+  if (idx * 10 + day !== symDay) { symDay = idx * 10 + day; symptoms(symDay, day); }
+}
+
+function symptoms(seedBase, day) {
+  let seed = seedBase * 9301 + 49297; // детерминированно: сегодня у всех одни и те же симптомы
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const pool = SYMPTOMS.slice(), out = [];
+  while (out.length < 3) out.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0]);
+  $('sym').innerHTML = out.map(t => `<li>${t}</li>`).join('');
+  $('symday').textContent = day ? `T−${day} ${plural(day, ['день', 'дня', 'дней'])}` : 'сегодня эфир!';
+}
+
+function finish() {
+  if (done) return; done = true;
+  ['d', 'h', 'm', 's'].forEach(k => set(k, '00'));
+  document.title = '✠ Сезон пройден · Клевер-ломка';
+  $('final').hidden = false;
+  burst();
+}
+
+// --- кнопки
+let toastT;
+function toast(t) {
+  $('toast').textContent = t; $('toast').classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(() => $('toast').classList.remove('show'), 3200);
+}
+
+let doses = 0;
+try { doses = +localStorage.getItem('clover-doses') || 0; } catch {}
+const showDoses = () => {
+  $('doses').textContent = doses;
+  $('doseNote').textContent = doses >= 50 ? '· лекарь сбежал в Королевство Пик' : doses >= 20 ? '· лекарь в шоке' : doses >= 10 ? '· мана на нуле' : '';
+};
+showDoses();
+let lastQuote = -1;
+$('doseBtn').addEventListener('click', e => {
+  let i; do i = Math.floor(Math.random() * DOSES.length); while (i === lastQuote);
+  lastQuote = i;
+  $('quote').textContent = DOSES[i];
+  doses++; showDoses();
+  try { localStorage.setItem('clover-doses', doses); } catch {}
+  document.body.classList.remove('shake'); void document.body.offsetWidth; document.body.classList.add('shake');
+  navigator.vibrate?.(120);
+  const r = e.currentTarget.getBoundingClientRect();
+  burst(r.left + r.width / 2, r.top + r.height / 2, 50);
+});
+
+$('share').addEventListener('click', async () => {
+  const data = { title: 'Клевер-ломка', text: 'Константин, держись. Отсчёт до новой серии Black Clover:', url: location.origin + location.pathname };
+  try {
+    if (navigator.share) await navigator.share(data);
+    else { await navigator.clipboard.writeText(data.url); toast('📋 Ссылка скопирована. Голубь вылетел.'); }
+  } catch {}
+});
+
+// --- частицы: красные искры и чёрные хлопья антимагии + салют
+const cv = $('fx'), ctx = cv.getContext('2d');
+let W, H, parts = [];
+function resize() {
+  const DPR = Math.min(devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+const mote = (y = H + 10) => {
+  const dark = Math.random() < .35;
+  return { x: Math.random() * W, y, vx: (Math.random() - .5) * .3, vy: -(.2 + Math.random() * .7), r: dark ? 1.5 + Math.random() * 2.5 : .6 + Math.random() * 1.6,
+    a: .25 + Math.random() * .6, hue: Math.random() < .85 ? 2 : 42, dark, g: 0, life: Infinity };
+};
+function burst(x = W / 2, y = H / 2, n = 260) {
+  if (reduce) return;
+  for (let i = 0; i < n; i++) {
+    const ang = Math.random() * Math.PI * 2, sp = 2 + Math.random() * (n > 100 ? 9 : 5), r = Math.random();
+    parts.push({ x, y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, r: 1 + Math.random() * 2.2, a: 1,
+      hue: r < .6 ? 2 : r < .85 ? 42 : 0, light: r >= .85, dark: false, g: .09, life: 60 + Math.random() * 70 });
+  }
+}
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const p = parts[i];
+    p.x += p.vx; p.y += p.vy; p.vy += p.g;
+    if (p.g) { p.vx *= .985; p.life--; p.a = Math.max(0, p.life / 90); }
+    else p.x += Math.sin((p.y + i) * .01) * .25;
+    if (p.life <= 0 || p.y < -10 || p.y > H + 20) { if (p.g) parts.splice(i, 1); else Object.assign(p, mote()); continue; }
+    ctx.globalCompositeOperation = p.dark ? 'source-over' : 'lighter';
+    ctx.fillStyle = p.dark ? `rgba(0,0,0,${p.a + .3})` : `hsla(${p.hue},100%,${p.light ? 92 : 55}%,${p.a})`;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 7); ctx.fill();
+  }
+  requestAnimationFrame(draw);
+}
+if (!reduce) {
+  resize(); addEventListener('resize', resize);
+  const n = Math.min(100, Math.round(W * H / 14000));
+  for (let i = 0; i < n; i++) parts.push(mote(Math.random() * H));
+  draw();
+}
+
+frame();
+</script>
+</body>
+</html>
