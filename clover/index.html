@@ -243,7 +243,10 @@ footer a{color:var(--gold-hi)}
 }
 /* широкий экран (обои в Wallpaper Engine): вёрстка под 1920×1080 в один экран, под 2K/4K масштабирует fit() */
 @media (min-width:1200px) and (orientation:landscape){
-  body{min-height:1080px}
+  /* растягиваем на всю высоту окна, лишнее место — между блоками, а не снизу */
+  body{display:flex;flex-direction:column;min-height:var(--h,1080px)}
+  .wrap{flex:1;display:flex;flex-direction:column;width:100%}
+  main{flex:1;display:flex;flex-direction:column;justify-content:space-evenly}
   .wrap{max-width:1800px}
   .bar{padding:12px 0}
   .hero{padding:8px 0}
@@ -432,7 +435,11 @@ const now = () => Date.now() + SHIFT;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 // обои: широкий экран свёрстан под 1920×1080, масштабируем под 2K/4K/125%
 const wide = matchMedia('(min-width:1200px) and (orientation:landscape)');
-const fit = () => document.documentElement.style.zoom = wide.matches ? Math.min(innerWidth / 1920, innerHeight / 1080) : '';
+const fit = () => {
+  const z = wide.matches ? Math.min(innerWidth / 1920, innerHeight / 1080) : 1;
+  document.documentElement.style.zoom = z;
+  document.documentElement.style.setProperty('--h', innerHeight / z + 'px'); // высота окна в «несжатых» px
+};
 fit(); addEventListener('resize', fit);
 setTimeout(() => $('intro').remove(), 1600);
 
