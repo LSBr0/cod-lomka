@@ -210,6 +210,19 @@ footer{position:relative;z-index:1;text-align:center;color:var(--mute);font-size
   .op{display:none}
   .card{padding:18px}
 }
+/* широкий экран (обои в Wallpaper Engine): вёрстка под 1920×1080 в один экран, под 2K/4K масштабирует fit() */
+@media (min-width:1200px) and (orientation:landscape){
+  body{min-height:0}
+  .wrap{max-width:1800px}
+  .hero{padding:32px 0 16px}
+  h1{margin:22px 0 0;font-size:54px}
+  .cd{margin-top:27px}
+  .num{font-size:108px}
+  .news{margin-top:16px;padding:10px 20px}
+  .grid{grid-template-columns:repeat(4,minmax(0,1fr));padding:22px 0}
+  .card{padding:18px}
+  footer{padding:10px 16px}
+}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   #fx{display:none}
@@ -309,6 +322,10 @@ const TARGET = test > 0 ? Date.now() + test * 1e3 : Date.parse('2026-10-23T00:00
 const START = Date.parse('2026-08-01T00:00:00+03:00'); // ponytail: условное «начало ожидания» для шкалы
 const CAMPAIGN = q.has('news') ? 0 : Date.parse('2026-10-16T00:00:00+03:00'); // ранний доступ к кампании; ?news — показать сразу
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// обои: широкий экран свёрстан под 1920×1080, масштабируем под 2K/4K/125%
+const wide = matchMedia('(min-width:1200px) and (orientation:landscape)');
+const fit = () => document.documentElement.style.zoom = wide.matches ? Math.min(innerWidth / 1920, innerHeight / 1080) : '';
+fit(); addEventListener('resize', fit);
 
 const SYMPTOMS = [
   'Пересмотрел трейлер 47 раз. Знает каждый кадр наизусть.',
@@ -329,6 +346,10 @@ const SYMPTOMS = [
   'Чистит геймпад ватной палочкой. Третий раз за день.',
   'Считает дни не в днях, а в «катках до релиза».',
   'Пишет в чат «gg», когда заканчивается рабочий день.',
+  'Уже собрал сборку на ISO в голове. Обвесы менять не планирует.',
+  'Называет любое оружие «ну это не ISO, но сойдёт».',
+  'Пишет «ISO» в поиске чаще, чем своё имя.',
+  'Разобрал и собрал воображаемый ISO на столе. Дважды.',
 ];
 const RADIO = [
   'Командование: держаться до 23.10. Подкрепление в пути',
